@@ -4,6 +4,9 @@
 
 Author: `nekodon`
 
+Modrinth: [Bone Meal Sieve](https://modrinth.com/mod/bone-meal-sieve)  
+Source: [nekodon-dev/BoneMealSieve](https://github.com/nekodon-dev/BoneMealSieve)
+
 ## 動作環境・導入
 
 - Minecraft Java Edition 26.1.2
