@@ -28,7 +28,6 @@ Bone Meal Sieve is a Fabric mod that converts normal bone meal into poor-quality
 - Automate input and output with hoppers.
 - Configure the high-quality bone meal rate in `config/bonemeal_sieve.json`.
 - Poor and high-quality bone meal have different effects on grass, nylium, moss, crops, dripleaf, flowers, vines, lily pads, and other plants.
-- Uses the vanilla bone meal texture with custom 16x16 overlays.
 
 ## Requirements
 
@@ -49,7 +48,6 @@ Bone Meal Sieve is a Fabric mod that converts normal bone meal into poor-quality
 - 上下のホッパーで投入と回収を自動化できます。
 - `config/bonemeal_sieve.json` で上質な骨粉の排出率を設定できます。
 - 草、ナイリウム、苔、作物、ドリップリーフ、花、ツタ、スイレンなどに品質別の効果があります。
-- バニラの骨粉テクスチャに16x16の専用模様を重ねて表示します。
 
 ## 必須環境
 
