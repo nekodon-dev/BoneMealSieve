@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string] $JarDir = (Join-Path $PSScriptRoot "..\build\libs"),
     [string] $TokenFile = (Join-Path $env:APPDATA "SilentLanding\modrinth-token.sec"),
     [switch] $DryRun
@@ -9,6 +9,7 @@ $ErrorActionPreference = "Stop"
 Add-Type -AssemblyName System.Net.Http
 
 $ApiBase = "https://api.modrinth.com/v2"
+$ProjectId = "bBuIIKlc"
 $ProjectSlug = "bone-meal-sieve"
 $UserAgent = "bonemeal-sieve-release-uploader/1.0"
 $RepositoryUrl = "https://github.com/nekodon-dev/BoneMealSieve"
@@ -89,9 +90,12 @@ function New-ApiClient($token) {
     return $client
 }
 
-function Get-Project {
+function Get-Project($token) {
     try {
-        return Invoke-RestMethod -Uri "$ApiBase/project/$ProjectSlug" -Headers @{ "User-Agent" = $UserAgent }
+        return Invoke-RestMethod -Uri "$ApiBase/project/$ProjectId" -Headers @{
+            "User-Agent" = $UserAgent
+            "Authorization" = $token
+        }
     } catch {
         if ($_.Exception.Response -and [int]$_.Exception.Response.StatusCode -eq 404) {
             return $null
@@ -233,7 +237,7 @@ if ($DryRun) {
 }
 
 $token = Get-Token
-$project = Get-Project
+$project = Get-Project $token
 if (-not $project) {
     $project = New-Project $token
     Write-Host "Created project: $($project.id)"
@@ -241,7 +245,10 @@ if (-not $project) {
 
 $existing = Invoke-RestMethod `
     -Uri "$ApiBase/project/$($project.id)/version" `
-    -Headers @{ "User-Agent" = $UserAgent }
+    -Headers @{
+        "User-Agent" = $UserAgent
+        "Authorization" = $token
+    }
 
 if (@($existing.version_number) -notcontains $VersionNumber) {
     $created = New-Version $token $jarPath (New-VersionData $project.id)
@@ -254,3 +261,4 @@ if ($project.status -eq "draft" -or $project.status -eq "private") {
     Submit-Project $token $project.id
     Write-Host "Submitted project for review."
 }
+
