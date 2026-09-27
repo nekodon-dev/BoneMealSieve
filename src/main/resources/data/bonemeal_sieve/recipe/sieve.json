@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "TTT",
+    "PIP",
+    "S S"
+  ],
+  "key": {
+    "S": "minecraft:stick",
+    "I": "minecraft:iron_nugget",
+    "T": "minecraft:string",
+    "P": "#minecraft:planks"
+  },
+  "result": {
+    "count": 1,
+    "id": "bonemeal_sieve:sieve"
+  }
+}

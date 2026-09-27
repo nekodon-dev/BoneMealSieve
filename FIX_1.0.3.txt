@@ -1,0 +1,6 @@
+BoneMealSieve 1.0.3 hotfix
+
+- Fixed Registry.register linkage for Minecraft 26.1.2: Registry is an interface,
+  so the prebuilt class must reference InterfaceMethodref rather than Methodref.
+- Replaced the mod icon with the newly created wooden sieve + bone meal + grass/flower icon.
+- Mod version updated to 1.0.3+26.1.2.

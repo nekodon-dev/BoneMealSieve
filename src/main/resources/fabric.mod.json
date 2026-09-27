@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "bonemeal_sieve",
+  "version": "${version}",
+  "name": "Bone Meal Sieve",
+  "description": "Sieve normal bone meal into low-quality or high-quality bone meal with target-specific growth behavior.",
+  "authors": ["nekodon"],
+  "contact": {
+    "homepage": "https://github.com/nekodon-dev/BoneMealSieve",
+    "sources": "https://github.com/nekodon-dev/BoneMealSieve",
+    "issues": "https://github.com/nekodon-dev/BoneMealSieve/issues"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/bonemeal_sieve/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "jp.ryuke.bonemealsieve.BoneMealSieveMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "~26.1.2",
+    "java": ">=25",
+    "fabric-api": ">=0.155.3+26.1.2"
+  }
+}

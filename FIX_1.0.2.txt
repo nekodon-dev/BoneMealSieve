@@ -1,0 +1,5 @@
+BoneMealSieve 1.0.2 hotfix
+
+The previous manually prebuilt JAR linked BuiltInRegistries.ITEM/BLOCK as net.minecraft.core.Registry. In Minecraft 26.1.2 those fields are declared as net.minecraft.core.DefaultedRegistry, so the JVM rejected the field reference with NoSuchFieldError.
+
+The Java source is intended to be built against the real Minecraft 26.1.2 classes with Fabric Loom; a normal Loom build resolves the correct binary field descriptor automatically.

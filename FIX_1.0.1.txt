@@ -1,0 +1,3 @@
+Fixed Minecraft 26.1.2 ItemLike package mismatch in the previously prebuilt JAR.
+Old incorrect runtime reference: net.minecraft.world.item.ItemLike
+Correct 26.1.2 reference: net.minecraft.world.level.ItemLike

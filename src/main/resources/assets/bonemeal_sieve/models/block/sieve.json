@@ -1,0 +1,156 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
+	"textures": {
+		"particle": "minecraft:block/oak_planks",
+		"wood": "minecraft:block/oak_planks",
+		"mesh": "bonemeal_sieve:block/sieve_mesh"
+	},
+	"elements": [
+		{
+			"from": [0, 12, 0],
+			"to": [16, 16, 2],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 4], "texture": "#wood"},
+				"east": {"uv": [14, 0, 16, 4], "texture": "#wood"},
+				"south": {"uv": [0, 0, 16, 4], "texture": "#wood"},
+				"west": {"uv": [0, 0, 2, 4], "texture": "#wood"},
+				"up": {"uv": [0, 0, 16, 2], "texture": "#wood"},
+				"down": {"uv": [0, 14, 16, 16], "texture": "#wood"}
+			}
+		},
+		{
+			"from": [0, 12, 14],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 4], "texture": "#wood"},
+				"east": {"uv": [0, 0, 2, 4], "texture": "#wood"},
+				"south": {"uv": [0, 0, 16, 4], "texture": "#wood"},
+				"west": {"uv": [14, 0, 16, 4], "texture": "#wood"},
+				"up": {"uv": [0, 14, 16, 16], "texture": "#wood"},
+				"down": {"uv": [0, 0, 16, 2], "texture": "#wood"}
+			}
+		},
+		{
+			"from": [0, 12, 2],
+			"to": [2, 16, 14],
+			"faces": {
+				"north": {"uv": [14, 0, 16, 4], "texture": "#wood"},
+				"east": {"uv": [2, 0, 14, 4], "texture": "#wood"},
+				"south": {"uv": [0, 0, 2, 4], "texture": "#wood"},
+				"west": {"uv": [2, 0, 14, 4], "texture": "#wood"},
+				"up": {"uv": [0, 2, 2, 14], "texture": "#wood"},
+				"down": {"uv": [0, 2, 2, 14], "texture": "#wood"}
+			}
+		},
+		{
+			"from": [14, 12, 2],
+			"to": [16, 16, 14],
+			"faces": {
+				"north": {"uv": [0, 0, 2, 4], "texture": "#wood"},
+				"east": {"uv": [2, 0, 14, 4], "texture": "#wood"},
+				"south": {"uv": [14, 0, 16, 4], "texture": "#wood"},
+				"west": {"uv": [2, 0, 14, 4], "texture": "#wood"},
+				"up": {"uv": [14, 2, 16, 14], "texture": "#wood"},
+				"down": {"uv": [14, 2, 16, 14], "texture": "#wood"}
+			}
+		},
+		{
+			"from": [2, 12.25, 2],
+			"to": [14, 12.75, 14],
+			"faces": {
+				"north": {"uv": [2, 3.25, 14, 3.75], "texture": "#mesh"},
+				"east": {"uv": [2, 3.25, 14, 3.75], "texture": "#mesh"},
+				"south": {"uv": [2, 3.25, 14, 3.75], "texture": "#mesh"},
+				"west": {"uv": [2, 3.25, 14, 3.75], "texture": "#mesh"},
+				"up": {"uv": [2, 2, 14, 14], "texture": "#mesh"},
+				"down": {"uv": [2, 2, 14, 14], "texture": "#mesh"}
+			}
+		},
+		{
+			"from": [1, 0, 1],
+			"to": [3, 12, 3],
+			"faces": {
+				"north": {"uv": [13, 4, 15, 16], "texture": "#wood"},
+				"east": {"uv": [13, 4, 15, 16], "texture": "#wood"},
+				"south": {"uv": [1, 4, 3, 16], "texture": "#wood"},
+				"west": {"uv": [1, 4, 3, 16], "texture": "#wood"},
+				"up": {"uv": [1, 1, 3, 3], "texture": "#wood"},
+				"down": {"uv": [1, 13, 3, 15], "texture": "#wood"}
+			}
+		},
+		{
+			"from": [13, 0, 1],
+			"to": [15, 12, 3],
+			"faces": {
+				"north": {"uv": [1, 4, 3, 16], "texture": "#wood"},
+				"east": {"uv": [13, 4, 15, 16], "texture": "#wood"},
+				"south": {"uv": [13, 4, 15, 16], "texture": "#wood"},
+				"west": {"uv": [1, 4, 3, 16], "texture": "#wood"},
+				"up": {"uv": [13, 1, 15, 3], "texture": "#wood"},
+				"down": {"uv": [13, 13, 15, 15], "texture": "#wood"}
+			}
+		},
+		{
+			"from": [1, 0, 13],
+			"to": [3, 12, 15],
+			"faces": {
+				"north": {"uv": [13, 4, 15, 16], "texture": "#wood"},
+				"east": {"uv": [1, 4, 3, 16], "texture": "#wood"},
+				"south": {"uv": [1, 4, 3, 16], "texture": "#wood"},
+				"west": {"uv": [13, 4, 15, 16], "texture": "#wood"},
+				"up": {"uv": [1, 13, 3, 15], "texture": "#wood"},
+				"down": {"uv": [1, 1, 3, 3], "texture": "#wood"}
+			}
+		},
+		{
+			"from": [13, 0, 13],
+			"to": [15, 12, 15],
+			"faces": {
+				"north": {"uv": [1, 4, 3, 16], "texture": "#wood"},
+				"east": {"uv": [1, 4, 3, 16], "texture": "#wood"},
+				"south": {"uv": [13, 4, 15, 16], "texture": "#wood"},
+				"west": {"uv": [13, 4, 15, 16], "texture": "#wood"},
+				"up": {"uv": [13, 13, 15, 15], "texture": "#wood"},
+				"down": {"uv": [13, 1, 15, 3], "texture": "#wood"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [75, -135, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 45, 0],
+			"translation": [0, 1, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, -135, 0],
+			"translation": [0, 1, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"ground": {
+			"translation": [0, 3, 0],
+			"scale": [0.45, 0.45, 0.45]
+		},
+		"gui": {
+			"rotation": [30, -135, 0],
+			"scale": [0.6, 0.6, 0.6]
+		},
+		"head": {
+			"translation": [0, 1.75, 0]
+		},
+		"fixed": {
+			"scale": [0.7, 0.7, 0.7]
+		}
+	}
+}
