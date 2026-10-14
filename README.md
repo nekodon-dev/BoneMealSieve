@@ -113,7 +113,7 @@ BoneMealSieve/
 ├─ gradle/wrapper/
 ├─ gradlew / gradlew.bat
 ├─ build.gradle / settings.gradle / gradle.properties
-├─ src/main/java/jp/ryuke/bonemealsieve/
+├─ src/main/java/dev/nekodon/bonemealsieve/
 │  ├─ block/
 │  ├─ config/
 │  └─ item/
@@ -121,8 +121,6 @@ BoneMealSieve/
 │  ├─ assets/bonemeal_sieve/
 │  ├─ data/bonemeal_sieve/
 │  └─ fabric.mod.json
-├─ src/test/java/
-├─ src/gametest/               # 実Minecraftサーバー上の自動テスト
 └─ build/libs/                 # ビルド時に生成
 ```
 
@@ -132,7 +130,6 @@ Java 25を `JAVA_HOME` に設定して実行します。
 
 ```powershell
 .\gradlew.bat clean build
-.\gradlew.bat runGameTest
 .\gradlew.bat runClient
 ```
 
@@ -147,12 +144,4 @@ Loom 1.17の要求に合わせてGradle Wrapperは9.5.0を使用しています�
 - ネザーラックと記載のない対象はバニラ動作を維持。
 - 骨粉2種類は標準の骨粉テクスチャに16×16の粒・きらめき模様を重ね、リソースパックにも追従。
 - 不要な植物を戻す処理ではドロップと設置副作用を抑え、緑色の成長パーティクルを表示。
-- `clean build`、設定のJUnitテスト17件、実Minecraftサーバー上のゲームテスト23件が成功。
-
-- 20tickより早く完了しないこと、60tickで3個を処理すること
-- 骨粉での右クリック投入・1個消費、網の下からの落下
-- 上下ホッパー間の搬送、異物の投入拒否、満杯時の保持と再開
-- 草ブロックの維持、斧タグ、硬さ・爆発耐性
-- 水中へのアイテム設置、バケツ回収時の内容物維持
-- 保存データからのアイテム・処理進行の復元、破壊時の内容物回収
-- 隣接する火で燃えないこと、ドロップしたふるいの溶岩での消失
+- `clean build` が成功することを確認済み。

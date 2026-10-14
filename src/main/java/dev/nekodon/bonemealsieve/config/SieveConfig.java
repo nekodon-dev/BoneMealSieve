@@ -1,4 +1,4 @@
-package jp.ryuke.bonemealsieve.config;
+package dev.nekodon.bonemealsieve.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

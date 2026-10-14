@@ -1,6 +1,6 @@
-package jp.ryuke.bonemealsieve.item;
+package dev.nekodon.bonemealsieve.item;
 
-import jp.ryuke.bonemealsieve.BoneMealSieveMod;
+import dev.nekodon.bonemealsieve.BoneMealSieveMod;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;

@@ -123,7 +123,7 @@ function New-Project($token) {
             donation_urls = @()
             client_side = "required"
             server_side = "required"
-            license_id = "LicenseRef-All-Rights-Reserved"
+            license_id = "MIT"
             license_url = "$RepositoryUrl/blob/main/LICENSE"
             project_type = "mod"
             initial_versions = @()

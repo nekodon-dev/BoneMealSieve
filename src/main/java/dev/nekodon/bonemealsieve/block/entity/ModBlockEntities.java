@@ -1,7 +1,7 @@
-package jp.ryuke.bonemealsieve.block.entity;
+package dev.nekodon.bonemealsieve.block.entity;
 
-import jp.ryuke.bonemealsieve.BoneMealSieveMod;
-import jp.ryuke.bonemealsieve.block.ModBlocks;
+import dev.nekodon.bonemealsieve.BoneMealSieveMod;
+import dev.nekodon.bonemealsieve.block.ModBlocks;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;

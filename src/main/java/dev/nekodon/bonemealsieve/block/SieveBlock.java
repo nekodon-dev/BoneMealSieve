@@ -1,7 +1,7 @@
-package jp.ryuke.bonemealsieve.block;
+package dev.nekodon.bonemealsieve.block;
 
-import jp.ryuke.bonemealsieve.block.entity.SieveBlockEntity;
-import jp.ryuke.bonemealsieve.block.entity.ModBlockEntities;
+import dev.nekodon.bonemealsieve.block.entity.SieveBlockEntity;
+import dev.nekodon.bonemealsieve.block.entity.ModBlockEntities;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;

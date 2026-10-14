@@ -10,12 +10,12 @@
     "sources": "https://github.com/nekodon-dev/BoneMealSieve",
     "issues": "https://github.com/nekodon-dev/BoneMealSieve/issues"
   },
-  "license": "All-Rights-Reserved",
+  "license": "MIT",
   "icon": "assets/bonemeal_sieve/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "jp.ryuke.bonemealsieve.BoneMealSieveMod"
+      "dev.nekodon.bonemealsieve.BoneMealSieveMod"
     ]
   },
   "depends": {
