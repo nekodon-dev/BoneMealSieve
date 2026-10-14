@@ -1,27 +1,144 @@
 # Bone Meal Sieve — Fabric 26.1.2
 
-設置した「骨粉ふるい」で通常の骨粉を、質の悪い骨粉／上質な骨粉に分けるMODです。
-
 Author: `nekodon`
 
-Modrinth: [Bone Meal Sieve](https://modrinth.com/mod/bone-meal-sieve)  
-Source: [nekodon-dev/BoneMealSieve](https://github.com/nekodon-dev/BoneMealSieve)
+Modrinth: [Bone Meal Sieve](https://modrinth.com/mod/bone-meal-sieve)
 
-## 動作環境・導入
+## English
 
-- Minecraft Java Edition 26.1.2
-- Java 25
-- Fabric Loader 0.19.5以上
-- Fabric API 0.155.3+26.1.2以上
+### Overview
 
-`build/libs/bonemeal-sieve-mc26.1.2-1.0.0.jar` をゲームの `mods` に配置してください。
-旧バージョンの本MODは外し、同時に複数入れないでください。`-sources.jar` は開発用です。
+Bone Meal Sieve is a Fabric mod that uses a placeable sieve to convert normal bone meal into Low-Quality Bone Meal or High-Quality Bone Meal.
 
-## 使い方
+### Usage
 
-通常の骨粉を持ってふるいを右クリックすると1個投入し、20ゲームtick（通常1秒）で変換します。
-投入された骨粉は順番に1個ずつ処理され、結果は網の下から真下へ落下します。
-クリエイティブでは骨粉を消費しません。素手や別のアイテムではふるい処理をしません。
+Right-click the sieve while holding normal bone meal to insert one item. Each item takes 20 game ticks (normally one second) to process. Inserted bone meal is processed one item at a time, and the result drops from beneath the mesh. Bone meal is not consumed in Creative mode. The sieve does nothing when used with an empty hand or another item.
+
+The sieve can hold up to one stack of input. If it is full, right-clicking it does not consume the held bone meal.
+
+### Hopper automation
+
+```text
+Upper hopper (pointing down, containing normal bone meal)
+    ↓
+Bone Meal Sieve (processes one item every 20 ticks)
+    ↓
+Lower hopper (collects the result directly)
+```
+
+The sieve accepts only normal bone meal from the top and exposes only processed results from the bottom. When a hopper is below the sieve, results are inserted directly instead of dropping into the world. If the lower hopper is full or disabled by redstone, the sieve holds the result and waits. Processing resumes when the hopper can accept the item, without rerolling the result or consuming another input item.
+
+Removing the lower hopper causes the held result to drop beneath the mesh. Stored items and processing progress are saved with the world. Breaking the sieve also drops its stored items.
+
+### Block properties
+
+- Placing the sieve does not turn the grass block beneath it into dirt.
+- Hardness is 2.0 and blast resistance is 3.0, matching oak planks. An axe is the preferred tool.
+- A placed sieve does not catch fire from fire or lava.
+- A dropped sieve item is destroyed in lava like other items.
+- The sieve is waterloggable and does not create an air pocket when placed underwater.
+- Its frame, legs, and breaking particles use `minecraft:block/oak_planks`, including textures supplied by resource packs.
+
+### Item availability
+
+- Bone Meal Sieve appears in the Functional Blocks creative tab.
+- Low-Quality Bone Meal and High-Quality Bone Meal appear in the Tools & Utilities creative tab.
+- All three items are searchable in Creative mode and can be indexed by JEI.
+- The sieve uses a normal crafting-table recipe. It does not add a separate JEI processing category.
+
+### Bone meal behavior
+
+Low-Quality Bone Meal and High-Quality Bone Meal behave as shown below. Targets not listed here, including netherrack, use vanilla bone meal behavior.
+
+| Target | Low-Quality Bone Meal | High-Quality Bone Meal |
+|---|---|---|
+| Grass block | Runs generation once and removes newly generated flowers | Runs generation three times and removes newly generated non-flower plants |
+| Crimson nylium | Keeps only crimson roots | Keeps only fungi and runs generation three times |
+| Warped nylium | Keeps only warped roots | Keeps nether sprouts, fungi, and twisting vines and runs generation three times |
+| Moss block and pale moss block | Removes azaleas and flowering azaleas | Removes short grass and tall grass |
+| Saplings, azaleas, and planted mangrove propagules | Vanilla behavior | 90% chance to grow |
+| Mushrooms and nether fungi | Vanilla behavior | 90% chance to grow |
+| Crops | Vanilla behavior | Applies two normal growth actions |
+| Small dripleaf | Drops one matching item while leaving the plant in place | Vanilla behavior |
+| Big dripleaf and its stem | Shrinks by one stage; at the minimum it becomes a small dripleaf, or drops as an item if it cannot be placed | Vanilla behavior |
+| Sugar cane and cactus | Vanilla behavior | Grows by one block, up to a height of three |
+| Common one-block flowers | Vanilla behavior | Drops one matching flower |
+| Vines | Vanilla behavior | Grows one block downward |
+| Lily pads | Vanilla behavior | Adds one lily pad to an adjacent valid water surface |
+
+Common flowers are dandelions, poppies, blue orchids, alliums, azure bluets, all tulip variants, oxeye daisies, cornflowers, and lilies of the valley. Special flowers such as wither roses, torchflowers, eyeblossoms, and golden dandelions are excluded.
+
+### Recipe
+
+```text
+String / String     / String
+Planks / Iron Ingot / Planks
+Stick  / Empty      / Stick
+```
+
+### Configuration
+
+On first launch, `config/bonemeal_sieve.json` is created in the game directory.
+
+```json
+{
+  "qualityBoneMealChance": 0.3
+}
+```
+
+`qualityBoneMealChance` sets the chance of producing High-Quality Bone Meal from 0.0 to 1.0. For example, 0.3 means 30% and 0.5 means 50%. A value of 0.0 always produces Low-Quality Bone Meal, while 1.0 always produces High-Quality Bone Meal. Restart the game or server after changing the file. Multiplayer uses the server-side setting.
+
+Out-of-range values, non-numeric values, and malformed JSON produce a warning and fall back to 30% without overwriting the invalid file. A missing key also uses 30%.
+
+### Development
+
+This is a Fabric Loom project with the Gradle Wrapper included.
+
+```text
+BoneMealSieve/
+├─ .github/workflows/build.yml
+├─ gradle/wrapper/
+├─ gradlew / gradlew.bat
+├─ build.gradle / settings.gradle / gradle.properties
+├─ src/main/java/dev/nekodon/bonemealsieve/
+│  ├─ block/
+│  ├─ config/
+│  └─ item/
+└─ src/main/resources/
+   ├─ assets/bonemeal_sieve/
+   ├─ data/bonemeal_sieve/
+   └─ fabric.mod.json
+```
+
+Generated build files, run directories, and IDE settings are excluded from Git. Java 25 must be set as `JAVA_HOME` before running the Gradle tasks.
+
+```powershell
+.\gradlew.bat clean build
+.\gradlew.bat runClient
+```
+
+Gradle Wrapper 9.5.0 is used to meet Loom 1.17 requirements.
+
+### Version 1.0.0
+
+- Added quality-specific behavior for grass blocks, nylium, moss, saplings, azaleas, mangrove propagules, mushrooms, fungi, crops, dripleaf, sugar cane, cactus, common flowers, vines, and lily pads.
+- On moss blocks, Low-Quality Bone Meal removes both azalea variants, while High-Quality Bone Meal removes short and tall grass.
+- Netherrack and targets not listed above keep their vanilla behavior.
+- Both custom bone meals use the vanilla bone meal texture with 16×16 particle or sparkle overlays and remain compatible with resource packs.
+- Cleanup after plant generation suppresses unwanted drops and placement side effects while preserving green growth particles.
+
+---
+
+## 日本語
+
+### 概要
+
+設置した「骨粉ふるい」で通常の骨粉を、質の悪い骨粉または上質な骨粉に分けるFabric製MODです。
+
+### 使い方
+
+通常の骨粉を持ってふるいを右クリックすると1個投入し、20ゲームtick（通常1秒）で変換します。投入された骨粉は順番に1個ずつ処理され、結果は網の下から真下へ落下します。クリエイティブでは骨粉を消費しません。素手や別のアイテムではふるい処理をしません。
+
 入力は最大1スタックまで保持し、満杯なら右クリックしても手持ちは消費しません。
 
 ### ホッパーによる自動化
@@ -34,28 +151,27 @@ Source: [nekodon-dev/BoneMealSieve](https://github.com/nekodon-dev/BoneMealSieve
 下のホッパー（結果を直接回収）
 ```
 
-上面から通常の骨粉だけを受け付け、下面から処理結果だけを取り出せます。
-下にホッパーがある場合はアイテムを地面に落とさず直接収納します。
-下のホッパーが満杯またはレッドストーンで停止中の場合は結果を保持して処理を待機し、
-空きができて動作可能になれば再開します。結果の再抽選や追加消費は行いません。
-下のホッパーを取り外すと、保持中の結果を網の下へ落とします。
-内部のアイテムと処理途中の経過tickはワールドに保存され、ふるいを壊すと内部のアイテムも排出します。
+上面から通常の骨粉だけを受け付け、下面から処理結果だけを取り出せます。下にホッパーがある場合はアイテムを地面に落とさず直接収納します。下のホッパーが満杯またはレッドストーンで停止中の場合は結果を保持して処理を待機し、空きができて動作可能になれば再開します。結果の再抽選や追加消費は行いません。
+
+下のホッパーを取り外すと、保持中の結果を網の下へ落とします。内部のアイテムと処理途中の経過tickはワールドに保存され、ふるいを壊すと内部のアイテムも排出します。
 
 ### ブロックの性質
 
-- 通常設置では下の草ブロックを土にしません（既存の遮光設定を維持）。
-- 硬さ2.0・爆発耐性3.0でオークの板材と同じ。斧が適正ツールです。
-- 設置したふるいは火が燃え移らず、溶岩からも着火しません。
+- 通常設置では下の草ブロックを土にしません。
+- 硬さ2.0・爆発耐性3.0でオークの板材と同じです。斧が適正ツールです。
+- 設置したふるいは火や溶岩から燃え移りません。
 - ドロップしたふるいアイテムは通常アイテム同様、溶岩に入れると消失します。
-- 水中設置・水入りバケツでの注水に対応し、ふるいの空間に水を保持します。
-  水没中の草ブロックの変化はバニラの水の仕様に従います。
-- 木枠・脚・破壊パーティクルはバニラの `minecraft:block/oak_planks` を参照します。
-  リソースパックのオークの板材テクスチャも反映されます。
+- 水中設置と水入りバケツでの注水に対応し、ふるいの空間に水を保持します。
+- 木枠・脚・破壊パーティクルは `minecraft:block/oak_planks` を参照し、リソースパックのオークの板材テクスチャも反映されます。
+
+### アイテムの表示
 
 - 骨粉ふるい：クリエイティブの「機能的ブロック」タブ
 - 質の悪い骨粉／上質な骨粉：「道具と実用品」タブ
-- 3種類ともクリエイティブ検索の対象。JEIのアイテム一覧への収集対象にもなります。
+- 3種類ともクリエイティブ検索の対象で、JEIのアイテム一覧への収集対象にもなります。
 - ふるいのクラフトは通常の作業台レシピです。JEI専用のふるい加工カテゴリは追加していません。
+
+### 骨粉の効果
 
 質の悪い骨粉と上質な骨粉は、対象に応じて次のように動作します。記載のない対象とネザーラックはバニラの骨粉処理です。
 
@@ -75,11 +191,9 @@ Source: [nekodon-dev/BoneMealSieve](https://github.com/nekodon-dev/BoneMealSieve
 | 通常のツタ | バニラ動作 | 真下へ1ブロック伸長 |
 | スイレンの葉 | バニラ動作 | 隣接する有効な水面へ1個増殖 |
 
-一般的な花はタンポポ、ポピー、ヒスイラン、アリウム、ヒナソウ、各種チューリップ、
-フランスギク、ヤグルマギク、スズランです。ウィザーローズ、トーチフラワー、アイブロッサム、
-金色のタンポポなどの特殊な花は対象外です。
+一般的な花はタンポポ、ポピー、ヒスイラン、アリウム、ヒナソウ、各種チューリップ、フランスギク、ヤグルマギク、スズランです。ウィザーローズ、トーチフラワー、アイブロッサム、金色のタンポポなどの特殊な花は対象外です。
 
-## レシピ
+### レシピ
 
 ```text
 糸   / 糸   / 糸
@@ -87,7 +201,7 @@ Source: [nekodon-dev/BoneMealSieve](https://github.com/nekodon-dev/BoneMealSieve
 棒   / 空   / 棒
 ```
 
-## JSON設定
+### JSON設定
 
 初回起動時にゲームディレクトリの `config/bonemeal_sieve.json` が生成されます。
 
@@ -97,15 +211,13 @@ Source: [nekodon-dev/BoneMealSieve](https://github.com/nekodon-dev/BoneMealSieve
 }
 ```
 
-上質な骨粉が出る確率を0.0〜1.0で指定します。0.3は30%、0.5は50%、
-0.0は常に質の悪い骨粉、1.0は常に上質な骨粉です。残りの確率が質の悪い骨粉になります。
-変更後はゲーム／サーバーを再起動してください。マルチプレイではサーバー側の設定を使います。
-範囲外・数値以外・壊れたJSONは警告ログを出して30%に戻ります。問題のファイルは上書きしません。
-キーがない場合も30%になります。
+上質な骨粉が出る確率を0.0〜1.0で指定します。0.3は30%、0.5は50%、0.0は常に質の悪い骨粉、1.0は常に上質な骨粉です。残りの確率が質の悪い骨粉になります。変更後はゲームまたはサーバーを再起動してください。マルチプレイではサーバー側の設定を使います。
 
-## 開発・フォルダ構成
+範囲外・数値以外・壊れたJSONは警告ログを出して30%に戻ります。問題のファイルは上書きしません。キーがない場合も30%になります。
 
-SwiftTorchと同じGradle Wrapper付きのFabric Loomプロジェクトです。
+### 開発・フォルダ構成
+
+Gradle Wrapper付きのFabric Loomプロジェクトです。
 
 ```text
 BoneMealSieve/
@@ -117,16 +229,13 @@ BoneMealSieve/
 │  ├─ block/
 │  ├─ config/
 │  └─ item/
-├─ src/main/resources/
-│  ├─ assets/bonemeal_sieve/
-│  ├─ data/bonemeal_sieve/
-│  └─ fabric.mod.json
-└─ build/libs/                 # ビルド時に生成
+└─ src/main/resources/
+   ├─ assets/bonemeal_sieve/
+   ├─ data/bonemeal_sieve/
+   └─ fabric.mod.json
 ```
 
-クライアント専用コードが必要になった場合は `src/client/java` を使用できます。
-`.gradle`・`build`・`run`・IDE設定はGit管理から除外します。
-Java 25を `JAVA_HOME` に設定して実行します。
+`.gradle`、`build`、`run`、IDE設定はGit管理から除外します。Java 25を `JAVA_HOME` に設定して実行します。
 
 ```powershell
 .\gradlew.bat clean build
@@ -134,14 +243,12 @@ Java 25を `JAVA_HOME` に設定して実行します。
 ```
 
 Loom 1.17の要求に合わせてGradle Wrapperは9.5.0を使用しています。
-必ずLoomと実際のMinecraft依存クラスでビルドしてください。仮のクラスを使ったJAR生成は不要です。
 
-## 正式版1.0.0
+### 正式版1.0.0
 
-- 草ブロック、ナイリウム、苔、苗木、ツツジ、マングローブの芽、キノコ、菌類、作物、
-  ドリップリーフ、サトウキビ、サボテン、一般花、ツタ、スイレンの葉へ品質別の処理を実装。
+- 草ブロック、ナイリウム、苔、苗木、ツツジ、マングローブの芽、キノコ、菌類、作物、ドリップリーフ、サトウキビ、サボテン、一般花、ツタ、スイレンの葉へ品質別の処理を実装。
 - 苔系は質の悪い骨粉でツツジ2種を除去し、上質な骨粉で短い草と背の高い草を除去。
 - ネザーラックと記載のない対象はバニラ動作を維持。
 - 骨粉2種類は標準の骨粉テクスチャに16×16の粒・きらめき模様を重ね、リソースパックにも追従。
 - 不要な植物を戻す処理ではドロップと設置副作用を抑え、緑色の成長パーティクルを表示。
-- `clean build` が成功することを確認済み。
+
