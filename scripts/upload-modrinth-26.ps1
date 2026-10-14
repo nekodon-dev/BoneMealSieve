@@ -1,7 +1,8 @@
-﻿param(
+param(
     [string] $JarDir = (Join-Path $PSScriptRoot "..\build\libs"),
     [string] $TokenFile = (Join-Path $env:APPDATA "SilentLanding\modrinth-token.sec"),
-    [switch] $DryRun
+    [switch] $DryRun,
+    [switch] $SubmitForReview
 )
 
 $ErrorActionPreference = "Stop"
@@ -9,7 +10,7 @@ $ErrorActionPreference = "Stop"
 Add-Type -AssemblyName System.Net.Http
 
 $ApiBase = "https://api.modrinth.com/v2"
-$ProjectId = "bBuIIKlc"
+$ProjectId = "FqetKSGR"
 $ProjectSlug = "bone-meal-sieve"
 $UserAgent = "bonemeal-sieve-release-uploader/1.0"
 $RepositoryUrl = "https://github.com/nekodon-dev/BoneMealSieve"
@@ -20,21 +21,18 @@ $FabricApiVersionId = "E1mjhYMF"
 $ProjectBody = @'
 # Bone Meal Sieve
 
-Bone Meal Sieve is a Fabric mod that converts normal bone meal into poor-quality or high-quality bone meal.
+Bone Meal Sieve is a Fabric mod that converts normal bone meal into low-quality or high-quality bone meal.
 
 ## Features
 
 - Process one bone meal per second with the sieve.
-- Automate input and output with hoppers.
+- Automate input and output with hoppers above and below the sieve.
 - Configure the high-quality bone meal rate in `config/bonemeal_sieve.json`.
-- Poor and high-quality bone meal have different effects on grass, nylium, moss, crops, dripleaf, flowers, vines, lily pads, and other plants.
+- Low-quality and high-quality bone meal have different effects on grass, nylium, moss, crops, dripleaf, flowers, vines, cactus, lily pads, and other plants.
+- Low-Quality Bone Meal used on a grass block generates grass without flowers.
+- High-Quality Bone Meal used on a grass block generates flowers without grass. In areas where flowers are naturally rare, you may need to use it several times.
 
-## Requirements
-
-- Minecraft 26.1.2
-- Fabric Loader 0.19.5 or later
-- Fabric API 0.155.3+26.1.2 or later
-- Java 25
+For more details, see the [README](https://github.com/nekodon-dev/BoneMealSieve/blob/main/README.md).
 
 ---
 
@@ -47,14 +45,11 @@ Bone Meal Sieve is a Fabric mod that converts normal bone meal into poor-quality
 - ふるいで骨粉を1個1秒で処理します。
 - 上下のホッパーで投入と回収を自動化できます。
 - `config/bonemeal_sieve.json` で上質な骨粉の排出率を設定できます。
-- 草、ナイリウム、苔、作物、ドリップリーフ、花、ツタ、スイレンなどに品質別の効果があります。
+- 草、ナイリウム、苔、作物、ドリップリーフ、花、ツタ、サボテン、スイレンなどに品質別の効果があります。
+- 質の悪い骨粉は草ブロックに使うと、花は生成されず草だけが生成されます。
+- 上質な骨粉を草ブロックに使うと、草は生成されず花だけが生成されます。もともと花の生成が少ないエリアでは何回か使用する必要があるかもしれません。
 
-## 必須環境
-
-- Minecraft 26.1.2
-- Fabric Loader 0.19.5以上
-- Fabric API 0.155.3+26.1.2以上
-- Java 25
+さらに詳細は[こちら](https://github.com/nekodon-dev/BoneMealSieve/blob/main/README.md)を参照してください。
 '@
 
 function Get-Token {
@@ -255,8 +250,11 @@ if (@($existing.version_number) -notcontains $VersionNumber) {
     Write-Host "Skip existing version: $VersionNumber"
 }
 
-if ($project.status -eq "draft" -or $project.status -eq "private") {
+if ($SubmitForReview -and ($project.status -eq "draft" -or $project.status -eq "private")) {
     Submit-Project $token $project.id
     Write-Host "Submitted project for review."
+} elseif ($project.status -eq "draft" -or $project.status -eq "private") {
+    Write-Host "Project remains a draft. Use -SubmitForReview only after final review."
 }
+
 
