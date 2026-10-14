@@ -90,42 +90,6 @@ On first launch, `config/bonemeal_sieve.json` is created in the game directory.
 
 Out-of-range values, non-numeric values, and malformed JSON produce a warning and fall back to 30% without overwriting the invalid file. A missing key also uses 30%.
 
-### Development
-
-This is a Fabric Loom project with the Gradle Wrapper included.
-
-```text
-BoneMealSieve/
-├─ .github/workflows/build.yml
-├─ gradle/wrapper/
-├─ gradlew / gradlew.bat
-├─ build.gradle / settings.gradle / gradle.properties
-├─ src/main/java/dev/nekodon/bonemealsieve/
-│  ├─ block/
-│  ├─ config/
-│  └─ item/
-└─ src/main/resources/
-   ├─ assets/bonemeal_sieve/
-   ├─ data/bonemeal_sieve/
-   └─ fabric.mod.json
-```
-
-Generated build files, run directories, and IDE settings are excluded from Git. Java 25 must be set as `JAVA_HOME` before running the Gradle tasks.
-
-```powershell
-.\gradlew.bat clean build
-.\gradlew.bat runClient
-```
-
-Gradle Wrapper 9.5.0 is used to meet Loom 1.17 requirements.
-
-### Version 1.0.0
-
-- Added quality-specific behavior for grass blocks, nylium, moss, saplings, azaleas, mangrove propagules, mushrooms, fungi, crops, dripleaf, sugar cane, cactus, common flowers, vines, and lily pads.
-- On moss blocks, Low-Quality Bone Meal removes both azalea variants, while High-Quality Bone Meal removes short and tall grass.
-- Netherrack and targets not listed above keep their vanilla behavior.
-- Both custom bone meals use the vanilla bone meal texture with 16×16 particle or sparkle overlays and remain compatible with resource packs.
-- Cleanup after plant generation suppresses unwanted drops and placement side effects while preserving green growth particles.
 
 ---
 
@@ -214,41 +178,4 @@ Gradle Wrapper 9.5.0 is used to meet Loom 1.17 requirements.
 上質な骨粉が出る確率を0.0〜1.0で指定します。0.3は30%、0.5は50%、0.0は常に質の悪い骨粉、1.0は常に上質な骨粉です。残りの確率が質の悪い骨粉になります。変更後はゲームまたはサーバーを再起動してください。マルチプレイではサーバー側の設定を使います。
 
 範囲外・数値以外・壊れたJSONは警告ログを出して30%に戻ります。問題のファイルは上書きしません。キーがない場合も30%になります。
-
-### 開発・フォルダ構成
-
-Gradle Wrapper付きのFabric Loomプロジェクトです。
-
-```text
-BoneMealSieve/
-├─ .github/workflows/build.yml
-├─ gradle/wrapper/
-├─ gradlew / gradlew.bat
-├─ build.gradle / settings.gradle / gradle.properties
-├─ src/main/java/dev/nekodon/bonemealsieve/
-│  ├─ block/
-│  ├─ config/
-│  └─ item/
-└─ src/main/resources/
-   ├─ assets/bonemeal_sieve/
-   ├─ data/bonemeal_sieve/
-   └─ fabric.mod.json
-```
-
-`.gradle`、`build`、`run`、IDE設定はGit管理から除外します。Java 25を `JAVA_HOME` に設定して実行します。
-
-```powershell
-.\gradlew.bat clean build
-.\gradlew.bat runClient
-```
-
-Loom 1.17の要求に合わせてGradle Wrapperは9.5.0を使用しています。
-
-### 正式版1.0.0
-
-- 草ブロック、ナイリウム、苔、苗木、ツツジ、マングローブの芽、キノコ、菌類、作物、ドリップリーフ、サトウキビ、サボテン、一般花、ツタ、スイレンの葉へ品質別の処理を実装。
-- 苔系は質の悪い骨粉でツツジ2種を除去し、上質な骨粉で短い草と背の高い草を除去。
-- ネザーラックと記載のない対象はバニラ動作を維持。
-- 骨粉2種類は標準の骨粉テクスチャに16×16の粒・きらめき模様を重ね、リソースパックにも追従。
-- 不要な植物を戻す処理ではドロップと設置副作用を抑え、緑色の成長パーティクルを表示。
 
