@@ -15,7 +15,7 @@ $ProjectSlug = "bone-meal-sieve"
 $UserAgent = "bonemeal-sieve-release-uploader/1.0"
 $RepositoryUrl = "https://github.com/nekodon-dev/BoneMealSieve"
 $JarFile = "bonemeal-sieve-mc26.1.2-1.0.0.jar"
-$VersionNumber = "26.1.2-1.0.0"
+$VersionNumber = "1.0.0"
 $FabricApiVersionId = "E1mjhYMF"
 
 $ProjectBody = @'
@@ -152,7 +152,7 @@ function New-Project($token) {
 
 function New-VersionData($projectId) {
     return @{
-        name = "Bone Meal Sieve 26.1.2-1.0.0"
+        name = "Bone Meal Sieve 1.0.0"
         version_number = $VersionNumber
         changelog = "Initial release for Minecraft 26.1.2."
         dependencies = @(
