@@ -1,7 +1,7 @@
-package dev.nekodon.bonemealsieve.block.entity;
+package com.nekodon.bonemealsieve.block.entity;
 
-import dev.nekodon.bonemealsieve.config.SieveConfig;
-import dev.nekodon.bonemealsieve.item.ModItems;
+import com.nekodon.bonemealsieve.config.SieveConfig;
+import com.nekodon.bonemealsieve.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;

@@ -15,7 +15,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "dev.nekodon.bonemealsieve.BoneMealSieveMod"
+      "com.nekodon.bonemealsieve.BoneMealSieveMod"
     ]
   },
   "depends": {

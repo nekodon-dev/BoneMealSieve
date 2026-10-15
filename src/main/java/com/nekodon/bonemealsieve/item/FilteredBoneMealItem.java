@@ -1,4 +1,4 @@
-package dev.nekodon.bonemealsieve.item;
+package com.nekodon.bonemealsieve.item;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

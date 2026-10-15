@@ -1,6 +1,6 @@
-package dev.nekodon.bonemealsieve.block;
+package com.nekodon.bonemealsieve.block;
 
-import dev.nekodon.bonemealsieve.BoneMealSieveMod;
+import com.nekodon.bonemealsieve.BoneMealSieveMod;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;

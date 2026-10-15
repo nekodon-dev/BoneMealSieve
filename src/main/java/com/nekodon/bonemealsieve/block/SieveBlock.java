@@ -1,7 +1,7 @@
-package dev.nekodon.bonemealsieve.block;
+package com.nekodon.bonemealsieve.block;
 
-import dev.nekodon.bonemealsieve.block.entity.SieveBlockEntity;
-import dev.nekodon.bonemealsieve.block.entity.ModBlockEntities;
+import com.nekodon.bonemealsieve.block.entity.SieveBlockEntity;
+import com.nekodon.bonemealsieve.block.entity.ModBlockEntities;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
