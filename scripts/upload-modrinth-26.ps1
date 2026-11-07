@@ -14,8 +14,24 @@ $ProjectId = "FqetKSGR"
 $ProjectSlug = "bone-meal-sieve"
 $UserAgent = "bonemeal-sieve-release-uploader/1.0"
 $RepositoryUrl = "https://github.com/nekodon-dev/BoneMealSieve"
-$JarFile = "bonemeal-sieve-mc26.3-1.1.0.jar"
 $VersionNumber = "1.1.0"
+$Releases = @(
+    @{
+        GameVersion = "26.1.2"
+        FabricApiVersion = "0.155.3+26.1.2"
+        JarFile = "bonemeal-sieve-mc26.1.2-1.1.0.jar"
+    },
+    @{
+        GameVersion = "26.2"
+        FabricApiVersion = "0.161.0+26.2"
+        JarFile = "bonemeal-sieve-mc26.2-1.1.0.jar"
+    },
+    @{
+        GameVersion = "26.3"
+        FabricApiVersion = "0.163.0+26.3"
+        JarFile = "bonemeal-sieve-mc26.3-1.1.0.jar"
+    }
+)
 
 $ProjectBody = @'
 # Bone Meal Sieve
@@ -149,18 +165,29 @@ function New-Project($token) {
     }
 }
 
-function New-VersionData($projectId) {
+function New-VersionData($projectId, $release) {
+    $gameVersion = $release.GameVersion
     return @{
-        name = "Bone Meal Sieve 1.1.0 for Minecraft 26.3"
+        name = "Bone Meal Sieve 1.1.0 for Minecraft $gameVersion"
         version_number = $VersionNumber
-        changelog = "Adds redstone pausing, descriptive bone meal tooltips, and data pack tags for growth targets."
+        changelog = @"
+- Added redstone control: a powered sieve pauses processing without resetting progress.
+- Added descriptive tooltips for Low-Quality and High-Quality Bone Meal.
+- Added data pack block tags for growth targets, double-growth crops, and common flowers.
+- Added support for Minecraft $gameVersion.
+
+- レッドストーン信号による処理の一時停止に対応しました。進捗は維持されます。
+- 質の悪い骨粉と上質な骨粉に説明ツールチップを追加しました。
+- 成長対象・2回成長作物・一般花を拡張できるデータパック用ブロックタグを追加しました。
+- Minecraft $gameVersion に対応しました。
+"@
         dependencies = @(
             @{
                 project_id = "P7dR8mSH"
                 dependency_type = "required"
             }
         )
-        game_versions = @("26.3")
+        game_versions = @($gameVersion)
         version_type = "release"
         loaders = @("fabric")
         featured = $true
@@ -216,14 +243,18 @@ function Submit-Project($token, $projectId) {
     }
 }
 
-$jarPath = Join-Path $JarDir $JarFile
-if (-not (Test-Path -LiteralPath $jarPath)) {
-    throw "JAR not found: $jarPath"
+foreach ($release in $Releases) {
+    $jarPath = Join-Path $JarDir $release.JarFile
+    if (-not (Test-Path -LiteralPath $jarPath)) {
+        throw "JAR not found: $jarPath"
+    }
 }
 
 if ($DryRun) {
-    Write-Host "Dry run: would create '$ProjectSlug' when absent and upload $JarFile as $VersionNumber"
-    New-VersionData "PROJECT_ID" | ConvertTo-Json -Depth 20
+    Write-Host "Dry run: would create '$ProjectSlug' when absent and upload all 1.1.0 release JARs"
+    foreach ($release in $Releases) {
+        New-VersionData "PROJECT_ID" $release | ConvertTo-Json -Depth 20
+    }
     exit
 }
 
@@ -241,11 +272,20 @@ $existing = Invoke-RestMethod `
         "Authorization" = $token
     }
 
-if (@($existing.version_number) -notcontains $VersionNumber) {
-    $created = New-Version $token $jarPath (New-VersionData $project.id)
-    Write-Host "Uploaded ${VersionNumber}: $($created.id)"
-} else {
-    Write-Host "Skip existing version: $VersionNumber"
+foreach ($release in $Releases) {
+    $jarPath = Join-Path $JarDir $release.JarFile
+    $alreadyUploaded = @($existing) | Where-Object {
+        $_.version_number -eq $VersionNumber -and
+        @($_.game_versions) -contains $release.GameVersion -and
+        @($_.files.filename) -contains $release.JarFile
+    }
+
+    if (-not $alreadyUploaded) {
+        $created = New-Version $token $jarPath (New-VersionData $project.id $release)
+        Write-Host "Uploaded $VersionNumber for Minecraft $($release.GameVersion): $($created.id)"
+    } else {
+        Write-Host "Skip existing version: $VersionNumber for Minecraft $($release.GameVersion)"
+    }
 }
 
 if ($SubmitForReview -and ($project.status -eq "draft" -or $project.status -eq "private")) {
