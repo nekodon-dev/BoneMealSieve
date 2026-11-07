@@ -1,5 +1,10 @@
 {
   "block.bonemeal_sieve.sieve": "骨粉ふるい",
   "item.bonemeal_sieve.poor_bone_meal": "質の悪い骨粉",
-  "item.bonemeal_sieve.quality_bone_meal": "上質な骨粉"
+  "item.bonemeal_sieve.quality_bone_meal": "上質な骨粉",
+  "tooltip.bonemeal_sieve.poor_bone_meal.summary": "一部の植物の成長を制限したり、成長段階を戻します。",
+  "tooltip.bonemeal_sieve.poor_bone_meal.details": "草のみの生成、苔のツツジ除外、ドリップリーフの縮小など。",
+  "tooltip.bonemeal_sieve.quality_bone_meal.summary": "植物を強く成長させ、対象ごとの成長を選別します。",
+  "tooltip.bonemeal_sieve.quality_bone_meal.details": "花のみの生成、作物の成長促進、植物ごとの特殊効果など。",
+  "tooltip.bonemeal_sieve.vanilla_fallback": "記載のない対象には通常の骨粉と同じ効果があります。"
 }

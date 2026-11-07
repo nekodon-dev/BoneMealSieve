@@ -1,5 +1,8 @@
 package com.nekodon.bonemealsieve.item;
 
+import com.nekodon.bonemealsieve.tag.ModBlockTags;
+import net.minecraft.ChatFormatting;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -7,10 +10,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BoneMealItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.AzaleaBlock;
 import net.minecraft.world.level.block.BigDripleafBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -18,22 +23,20 @@ import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.GrassBlock;
 import net.minecraft.world.level.block.MangrovePropaguleBlock;
-import net.minecraft.world.level.block.MushroomBlock;
-import net.minecraft.world.level.block.NetherFungusBlock;
-import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.SmallDripleafBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Predicate;
+import java.util.function.Consumer;
 
 /** Bone meal variants with target-specific low/high-quality behavior. */
 public final class FilteredBoneMealItem extends BoneMealItem {
@@ -43,23 +46,25 @@ public final class FilteredBoneMealItem extends BoneMealItem {
     private static final int VERTICAL_RADIUS = 8;
     private static final double QUALITY_GROWTH_CHANCE = 0.90;
 
-    private static final Set<Block> DOUBLE_GROWTH_CROPS = Set.of(
-            Blocks.WHEAT, Blocks.CARROTS, Blocks.POTATOES, Blocks.BEETROOTS,
-            Blocks.COCOA, Blocks.SWEET_BERRY_BUSH, Blocks.PITCHER_CROP,
-            Blocks.TORCHFLOWER_CROP, Blocks.MELON_STEM, Blocks.PUMPKIN_STEM);
-
-    // Excludes wither rose, torchflower, both eyeblossoms and golden dandelion.
-    private static final Set<Block> COMMON_SMALL_FLOWERS = Set.of(
-            Blocks.DANDELION, Blocks.POPPY, Blocks.BLUE_ORCHID, Blocks.ALLIUM,
-            Blocks.AZURE_BLUET, Blocks.RED_TULIP, Blocks.ORANGE_TULIP,
-            Blocks.WHITE_TULIP, Blocks.PINK_TULIP, Blocks.OXEYE_DAISY,
-            Blocks.CORNFLOWER, Blocks.LILY_OF_THE_VALLEY);
-
     private final Mode mode;
 
     public FilteredBoneMealItem(Properties properties, Mode mode) {
         super(properties);
         this.mode = mode;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context,
+                                TooltipDisplay display, Consumer<Component> tooltip,
+                                TooltipFlag flag) {
+        super.appendHoverText(stack, context, display, tooltip, flag);
+        String prefix = mode == Mode.GRASS_ONLY
+                ? "tooltip.bonemeal_sieve.poor_bone_meal"
+                : "tooltip.bonemeal_sieve.quality_bone_meal";
+        tooltip.accept(Component.translatable(prefix + ".summary").withStyle(ChatFormatting.GRAY));
+        tooltip.accept(Component.translatable(prefix + ".details").withStyle(ChatFormatting.DARK_GRAY));
+        tooltip.accept(Component.translatable("tooltip.bonemeal_sieve.vanilla_fallback")
+                .withStyle(ChatFormatting.DARK_GRAY));
     }
 
     @Override
@@ -103,7 +108,7 @@ public final class FilteredBoneMealItem extends BoneMealItem {
             return applyQualityChanceGrowth(context, state);
         }
 
-        if (mode == Mode.FLOWERS_ONLY && DOUBLE_GROWTH_CROPS.contains(state.getBlock())) {
+        if (mode == Mode.FLOWERS_ONLY && state.is(ModBlockTags.DOUBLE_GROWTH_CROPS)) {
             return applyRepeatedGrowth(context, 2);
         }
 
@@ -120,7 +125,7 @@ public final class FilteredBoneMealItem extends BoneMealItem {
             return growColumnPlant(context, state.getBlock());
         }
 
-        if (mode == Mode.FLOWERS_ONLY && COMMON_SMALL_FLOWERS.contains(state.getBlock())) {
+        if (mode == Mode.FLOWERS_ONLY && state.is(ModBlockTags.COMMON_SMALL_FLOWERS)) {
             return duplicateCommonFlower(context);
         }
 
@@ -302,8 +307,7 @@ public final class FilteredBoneMealItem extends BoneMealItem {
         Block block = state.getBlock();
         if (block instanceof MangrovePropaguleBlock
                 && state.getValue(MangrovePropaguleBlock.HANGING)) return false;
-        return block instanceof SaplingBlock || block instanceof AzaleaBlock
-                || block instanceof MushroomBlock || block instanceof NetherFungusBlock;
+        return state.is(ModBlockTags.QUALITY_CHANCE_TARGETS);
     }
 
     private static boolean isQualityWarpedVegetation(BlockState state) {

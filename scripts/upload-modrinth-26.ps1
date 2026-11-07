@@ -14,8 +14,8 @@ $ProjectId = "FqetKSGR"
 $ProjectSlug = "bone-meal-sieve"
 $UserAgent = "bonemeal-sieve-release-uploader/1.0"
 $RepositoryUrl = "https://github.com/nekodon-dev/BoneMealSieve"
-$JarFile = "bonemeal-sieve-mc26.1.2-1.0.0.jar"
-$VersionNumber = "1.0.0"
+$JarFile = "bonemeal-sieve-mc26.1.2-1.1.0.jar"
+$VersionNumber = "1.1.0"
 $FabricApiVersionId = "E1mjhYMF"
 
 $ProjectBody = @'
@@ -152,9 +152,9 @@ function New-Project($token) {
 
 function New-VersionData($projectId) {
     return @{
-        name = "Bone Meal Sieve 1.0.0"
+        name = "Bone Meal Sieve 1.1.0 for Minecraft 26.1.2"
         version_number = $VersionNumber
-        changelog = "Initial release for Minecraft 26.1.2."
+        changelog = "Adds redstone pausing, descriptive bone meal tooltips, and data pack tags for growth targets."
         dependencies = @(
             @{
                 version_id = $FabricApiVersionId

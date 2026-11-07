@@ -56,6 +56,9 @@ public final class SieveBlockEntity extends BlockEntity implements WorldlyContai
             }
             return;
         }
+        if (level.hasNeighborSignal(pos)) {
+            return;
+        }
         sieve.progress++;
         if (sieve.progress >= PROCESSING_TICKS) {
             sieve.items.get(INPUT).shrink(1);

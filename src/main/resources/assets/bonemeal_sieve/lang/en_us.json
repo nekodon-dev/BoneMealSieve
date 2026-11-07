@@ -1,5 +1,10 @@
 {
   "block.bonemeal_sieve.sieve": "Bone Meal Sieve",
   "item.bonemeal_sieve.poor_bone_meal": "Low-Quality Bone Meal",
-  "item.bonemeal_sieve.quality_bone_meal": "High-Quality Bone Meal"
+  "item.bonemeal_sieve.quality_bone_meal": "High-Quality Bone Meal",
+  "tooltip.bonemeal_sieve.poor_bone_meal.summary": "Restricts or reverses growth on certain plants.",
+  "tooltip.bonemeal_sieve.poor_bone_meal.details": "Grass only, no moss azaleas, and reduced dripleaf growth.",
+  "tooltip.bonemeal_sieve.quality_bone_meal.summary": "Strengthens or selectively controls plant growth.",
+  "tooltip.bonemeal_sieve.quality_bone_meal.details": "Flowers only, faster crops, and special growth effects.",
+  "tooltip.bonemeal_sieve.vanilla_fallback": "Unlisted targets use normal bone meal behavior."
 }

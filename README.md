@@ -1,4 +1,4 @@
-# Bone Meal Sieve — Fabric 26.1.2
+# Bone Meal Sieve 1.1.0
 
 Author: `nekodon`
 
@@ -9,6 +9,8 @@ Modrinth: [Bone Meal Sieve](https://modrinth.com/mod/bone-meal-sieve)
 ### Overview
 
 Bone Meal Sieve is a Fabric mod that uses a placeable sieve to convert normal bone meal into Low-Quality Bone Meal or High-Quality Bone Meal.
+
+Supported Minecraft versions are 26.1.2, 26.2, and 26.3. Each version has a matching branch and release file.
 
 ### Usage
 
@@ -30,6 +32,10 @@ The sieve accepts only normal bone meal from the top and exposes only processed 
 
 Removing the lower hopper causes the held result to drop beneath the mesh. Stored items and processing progress are saved with the world. Breaking the sieve also drops its stored items.
 
+### Redstone control
+
+Powering the sieve pauses processing without resetting its current progress. Input can remain stored while paused. A completed result can still move into the lower hopper, so powering the sieve cannot permanently trap an already processed item.
+
 ### Block properties
 
 - Placing the sieve does not turn the grass block beneath it into dirt.
@@ -45,6 +51,8 @@ Removing the lower hopper causes the held result to drop beneath the mesh. Store
 - Low-Quality Bone Meal and High-Quality Bone Meal appear in the Tools & Utilities creative tab.
 - All three items are searchable in Creative mode and can be indexed by JEI.
 - The sieve uses a normal crafting-table recipe. It does not add a separate JEI processing category.
+
+Low-Quality Bone Meal and High-Quality Bone Meal include tooltips describing their main effects and explaining that unspecified targets use vanilla bone meal behavior.
 
 ### Bone meal behavior
 
@@ -67,6 +75,16 @@ Low-Quality Bone Meal and High-Quality Bone Meal behave as shown below. Targets 
 | Lily pads | Vanilla behavior | Adds one lily pad to an adjacent valid water surface |
 
 Common flowers are dandelions, poppies, blue orchids, alliums, azure bluets, all tulip variants, oxeye daisies, cornflowers, and lilies of the valley. Special flowers such as wither roses, torchflowers, eyeblossoms, and golden dandelions are excluded.
+
+### Data pack integration
+
+Data packs and other mods can extend the following block tags:
+
+- `bonemeal_sieve:quality_chance_targets`: targets that High-Quality Bone Meal attempts to grow with a 90% success chance.
+- `bonemeal_sieve:double_growth_crops`: crops that receive two normal growth actions from High-Quality Bone Meal.
+- `bonemeal_sieve:common_small_flowers`: flowers duplicated by High-Quality Bone Meal.
+
+Entries in the first two tags must implement Minecraft's normal bonemealable block behavior. The built-in vanilla targets are supplied by the mod's default data pack.
 
 ### Recipe
 
@@ -99,6 +117,8 @@ Out-of-range values, non-numeric values, and malformed JSON produce a warning an
 
 設置した「骨粉ふるい」で通常の骨粉を、質の悪い骨粉または上質な骨粉に分けるFabric製MODです。
 
+Minecraft 26.1.2、26.2、26.3に対応し、各バージョン用のブランチと配布ファイルを用意しています。
+
 ### 使い方
 
 通常の骨粉を持ってふるいを右クリックすると1個投入し、20ゲームtick（通常1秒）で変換します。投入された骨粉は順番に1個ずつ処理され、結果は網の下から真下へ落下します。クリエイティブでは骨粉を消費しません。素手や別のアイテムではふるい処理をしません。
@@ -119,6 +139,10 @@ Out-of-range values, non-numeric values, and malformed JSON produce a warning an
 
 下のホッパーを取り外すと、保持中の結果を網の下へ落とします。内部のアイテムと処理途中の経過tickはワールドに保存され、ふるいを壊すと内部のアイテムも排出します。
 
+### レッドストーン制御
+
+ふるいにレッドストーン信号を入力すると、現在の進捗を維持したまま処理を一時停止します。停止中も骨粉を内部に保持できます。完成済みの出力は下のホッパーへ搬出できるため、信号によって処理済みアイテムが永久に詰まることはありません。
+
 ### ブロックの性質
 
 - 通常設置では下の草ブロックを土にしません。
@@ -134,6 +158,8 @@ Out-of-range values, non-numeric values, and malformed JSON produce a warning an
 - 質の悪い骨粉／上質な骨粉：「道具と実用品」タブ
 - 3種類ともクリエイティブ検索の対象で、JEIのアイテム一覧への収集対象にもなります。
 - ふるいのクラフトは通常の作業台レシピです。JEI専用のふるい加工カテゴリは追加していません。
+
+質の悪い骨粉と上質な骨粉には、主な効果と、記載されていない対象では通常の骨粉として動作することを説明するツールチップがあります。
 
 ### 骨粉の効果
 
@@ -156,6 +182,16 @@ Out-of-range values, non-numeric values, and malformed JSON produce a warning an
 | スイレンの葉 | バニラ動作 | 隣接する有効な水面へ1個増殖 |
 
 一般的な花はタンポポ、ポピー、ヒスイラン、アリウム、ヒナソウ、各種チューリップ、フランスギク、ヤグルマギク、スズランです。ウィザーローズ、トーチフラワー、アイブロッサム、金色のタンポポなどの特殊な花は対象外です。
+
+### データパック連携
+
+データパックや他MODから、次のブロックタグへ対象を追加できます。
+
+- `bonemeal_sieve:quality_chance_targets`：上質な骨粉が90%の確率で成長を試みる対象
+- `bonemeal_sieve:double_growth_crops`：上質な骨粉で通常2回分成長する作物
+- `bonemeal_sieve:common_small_flowers`：上質な骨粉で同じ花を1個複製する一般花
+
+最初の2タグへ追加するブロックは、Minecraftの通常の骨粉成長処理に対応している必要があります。既定のバニラ対象はMOD内のデータパックで登録されています。
 
 ### レシピ
 
