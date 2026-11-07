@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.BigDripleafBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.GrassBlock;
 import net.minecraft.world.level.block.MangrovePropaguleBlock;
@@ -146,12 +147,15 @@ public final class FilteredBoneMealItem extends BoneMealItem {
         Level level = context.getLevel();
         BlockPos center = context.getClickedPos();
         BlockState clickedState = level.getBlockState(center);
-        if (!target.isValidBonemealTarget(level, center, clickedState)) return InteractionResult.PASS;
+        if (!target.isValidBonemealTarget(level, center, clickedState, BonemealSource.INTERACTION)) {
+            return InteractionResult.PASS;
+        }
         if (!(level instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
 
         Map<BlockPos, BlockState> before = snapshot(serverLevel, center);
         for (int i = 0; i < passes; i++) {
-            target.performBonemeal(serverLevel, serverLevel.getRandom(), center, clickedState);
+            target.performBonemeal(serverLevel, serverLevel.getRandom(), center, clickedState,
+                    BonemealSource.INTERACTION);
         }
         restoreRejectedChanges(serverLevel, before, keepGeneratedState);
         finishBonemealUse(context, serverLevel, center, true);
@@ -160,12 +164,14 @@ public final class FilteredBoneMealItem extends BoneMealItem {
 
     private InteractionResult applyQualityChanceGrowth(UseOnContext context, BlockState initialState) {
         if (!(initialState.getBlock() instanceof BonemealableBlock target)
-                || !target.isValidBonemealTarget(context.getLevel(), context.getClickedPos(), initialState)) {
+                || !target.isValidBonemealTarget(context.getLevel(), context.getClickedPos(), initialState,
+                BonemealSource.INTERACTION)) {
             return InteractionResult.PASS;
         }
         if (!(context.getLevel() instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
         if (serverLevel.getRandom().nextDouble() < QUALITY_GROWTH_CHANCE) {
-            target.performBonemeal(serverLevel, serverLevel.getRandom(), context.getClickedPos(), initialState);
+            target.performBonemeal(serverLevel, serverLevel.getRandom(), context.getClickedPos(), initialState,
+                    BonemealSource.INTERACTION);
         }
         finishBonemealUse(context, serverLevel, context.getClickedPos(), true);
         return InteractionResult.SUCCESS_SERVER;
@@ -176,14 +182,18 @@ public final class FilteredBoneMealItem extends BoneMealItem {
         BlockPos pos = context.getClickedPos();
         BlockState initial = level.getBlockState(pos);
         if (!(initial.getBlock() instanceof BonemealableBlock initialTarget)
-                || !initialTarget.isValidBonemealTarget(level, pos, initial)) return InteractionResult.PASS;
+                || !initialTarget.isValidBonemealTarget(level, pos, initial, BonemealSource.INTERACTION)) {
+            return InteractionResult.PASS;
+        }
         if (!(level instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
 
         for (int i = 0; i < passes; i++) {
             BlockState current = serverLevel.getBlockState(pos);
             if (!(current.getBlock() instanceof BonemealableBlock target)
-                    || !target.isValidBonemealTarget(serverLevel, pos, current)) break;
-            target.performBonemeal(serverLevel, serverLevel.getRandom(), pos, current);
+                    || !target.isValidBonemealTarget(serverLevel, pos, current,
+                    BonemealSource.INTERACTION)) break;
+            target.performBonemeal(serverLevel, serverLevel.getRandom(), pos, current,
+                    BonemealSource.INTERACTION);
         }
         finishBonemealUse(context, serverLevel, pos, true);
         return InteractionResult.SUCCESS_SERVER;
